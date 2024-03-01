@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RainbowKitProvider, createClient } from "@rainbow-me/rainbowkit";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import "./index.css";
 import { WagmiProvider } from "wagmi";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -11,7 +11,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreditVaults from "./routes/CreditVaults";
 import Landing from "./routes/Landing";
 import LendingMarket from "./routes/LendingMarket";
-import PositionManager from "./routes/PositionManager";
 import ErrorPage from "./routes/ErrorPage";
 
 const router = createBrowserRouter([
@@ -22,7 +21,6 @@ const router = createBrowserRouter([
   {
     path: "/App",
     element: <App />,
-    ErrorPage: <ErrorPage/>,
     children: [
 
       {
