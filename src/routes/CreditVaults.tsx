@@ -33,7 +33,7 @@ function CreditVaults() {
     abi: erc20abi,
     address: Contracts.creditVault,
     functionName: "balanceOf",
-    args: [account.address],
+    args: [account.address | undefined],
   });
   console.log(balance);
 
