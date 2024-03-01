@@ -5,6 +5,7 @@ import { Contracts } from "../abis/Twine";
 import { useEffect } from "react";
 import { parseAbi, formatUnits } from "viem";
 import { sepolia } from 'wagmi/chains' 
+import { Address } from "viem";
 
 
 const erc20abi = parseAbi([
@@ -33,7 +34,7 @@ function CreditVaults() {
     abi: erc20abi,
     address: Contracts.creditVault,
     functionName: "balanceOf",
-    args: [account.address | undefined],
+    args: [account.address as Address | undefined],
   });
   console.log(balance);
 
@@ -44,13 +45,6 @@ function CreditVaults() {
     args: [],
   });
 
-  const { data: vaultBalance } = useReadContract({
-    abi: erc20abi,
-    address: Contracts.ausdc,
-    functionName: "balanceOf",
-    args: [Contracts.creditVault],
-  });
-
   // assets and totalAssets DO NOT WORK, had to find workaround
 
   const { data: totalAssets } = useReadContract({
@@ -58,7 +52,6 @@ function CreditVaults() {
     address: Contracts.creditVault,
     functionName: "totalAssets",
     args: [],
-    retry: true,
   });
 
   const { data: assets } = useReadContract({
@@ -66,7 +59,6 @@ function CreditVaults() {
     address: Contracts.creditVault,
     functionName: "convertToAssets",
     args: [balance],
-    retry: true,
   });
 
   async function submitApproval(e: React.FormEvent<HTMLFormElement>) {
