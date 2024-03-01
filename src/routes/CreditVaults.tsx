@@ -18,12 +18,12 @@ function CreditVaults() {
   const account = useAccount();
 
   const {
-    data: hash,
     isPending,
     writeContract,
     isError,
     error,
   } = useWriteContract();
+  console.log(isError)
 
   const {
     data: balance,
