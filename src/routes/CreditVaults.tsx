@@ -145,9 +145,9 @@ function CreditVaults() {
     <div>
       {account.isConnected ? (
         <div className="text-black">
-          {balance ? (
+          {assets ? (
             <ul className="flex flex-row justify-between">
-              Balance: ${formatUnits(balance, decimals).toString()}
+              Balance: ${formatUnits(assets, decimals).toString()}
               <li className="m-2"> APY: 1.29%</li>
             </ul>
           ) : (
