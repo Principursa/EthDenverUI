@@ -2,8 +2,8 @@ import Usdc from "../assets/usdc.png";
 import { useWriteContract, useReadContract, useAccount } from "wagmi";
 import { ATokenVault } from "../abis/ATokenVault";
 import { Contracts } from "../abis/Twine";
-import { useState, useEffect } from "react";
-import { Address, parseAbi, formatUnits } from "viem";
+import { useEffect } from "react";
+import { parseAbi, formatUnits } from "viem";
 import { sepolia } from 'wagmi/chains' 
 
 

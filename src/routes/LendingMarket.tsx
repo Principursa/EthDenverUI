@@ -1,16 +1,16 @@
-import{ useState, useEffect } from "react";
-import {
+import{useEffect } from "react";
+/* import {
   fetchContractData,
   formattedPoolReserves,
 } from "../hooks/fetchContractData";
-
+ */
 import { useAccount, useWriteContract, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
 import { MetaAccount } from "../abis/MetaAccount";
 
 import { Contracts } from "../abis/Twine";
 
-import { Address, parseAbi } from "viem";
+import {parseAbi } from "viem";
 
 const erc20abi = parseAbi([
   "function balanceOf(address owner) view returns (uint256)",
@@ -24,7 +24,6 @@ function LendingMarket() {
   //console.log(formattedPoolReserves);
 
   const {
-    data: hash,
     isPending,
     writeContract,
     isError,

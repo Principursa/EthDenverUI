@@ -1,7 +1,6 @@
-import React from "react";
 import Splash from "../assets/splash.png";
 
-import { Outlet, Link } from "react-router-dom";
+import {Link } from "react-router-dom";
 function Landing() {
   return (
     <div className="h-screen w-screen bg-white flex flex-col items-center">

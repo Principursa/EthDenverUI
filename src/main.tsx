@@ -11,7 +11,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreditVaults from "./routes/CreditVaults";
 import Landing from "./routes/Landing";
 import LendingMarket from "./routes/LendingMarket";
-import ErrorPage from "./routes/ErrorPage";
 
 const router = createBrowserRouter([
       {
