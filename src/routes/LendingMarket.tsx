@@ -226,9 +226,9 @@ function LendingMarket() {
 
   return (
     <div className="w-9/12">
-      <div className="text-black p-10">
-        <h1 className="font-bold">Lending Market</h1>
-        <h2> Use the Aave lending market with additional borrowing limit.</h2>
+      <div className="text-black p-10 flex flex-col items-start w-full text-left">
+        <h1 className="font-bold justify-self-start">Lending Market</h1>
+        <h2 className="mt-2"> Use the Aave lending market with additional borrowing limit.</h2>
       </div>
       {account.isConnected ? (
         <div>
@@ -324,17 +324,24 @@ function LendingMarket() {
               <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-6 border-slate-300">
                 <img src={Usdc} alt="usdc" className="size-8" />
                 <p className="m-2 font-semibold">USDC</p>
-                <p>16.05%</p>
                 <div>
                   <form
                     onSubmit={submitMetaAccountApproval}
                     className="flex flex-col"
                   >
+
+                <div className="flex flex-col">
+                    <input
+                      name=" "
+                      placeholder=" "
+                      className="bg-white mb-2"
+                    />
+                    </div>
                     <input
                       name="amount"
                       placeholder="Approval amount"
                       required
-                      className="bg-white"
+                      className="bg-white mb-2"
                     />
                     <button
                       className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
@@ -350,7 +357,14 @@ function LendingMarket() {
                     onSubmit={submitMetaAccountDeposit}
                     className="flex flex-col"
                   >
-                    <input name="amount" placeholder="Deposit Amount" className="bg-white" />
+                    <div className="flex flex-col">
+                    <input
+                      name=" "
+                      placeholder=" "
+                      className="bg-white mb-2"
+                    />
+                    </div>
+                    <input name="amount" placeholder="Deposit Amount" className="bg-white mb-2" />
                     <button
                       className="text-black border-2 shadow-md border-slate-300 hover:border-emerald-300"
                       type="submit"
@@ -365,7 +379,14 @@ function LendingMarket() {
                     onSubmit={submitMetaAccountWithdrawal}
                     className="flex flex-col"
                   >
-                    <input name="amount" placeholder="Withdraw Amount" className="bg-white" />
+                    <div className="flex flex-col">
+                    <input
+                      name=" "
+                      placeholder=" "
+                      className="bg-white mb-2"
+                    />
+                    </div>
+                    <input name="amount" placeholder="Withdraw Amount" className="bg-white mb-2" />
                     <button
                       className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                       type="submit"
@@ -386,7 +407,6 @@ function LendingMarket() {
 
                 <img src={wBTCLogo} alt="wbtc" className="size-8 mr-2" />
                 <p className="mr-2 font-semibold">WBTC</p>
-                <p>1.00%</p>
                 <div>
                   <form onSubmit={submitBorrow} className="flex flex-col">
                     <div className="flex flex-col">
