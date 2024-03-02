@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Plus+Jakarta+Sans:ital,wght@0,710;1,710&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
 
 *{
  margin: 0;
@@ -11,7 +15,8 @@ place-items: center
 
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
+
   line-height: 1.5;
   font-weight: 400;
   margin: 0;
