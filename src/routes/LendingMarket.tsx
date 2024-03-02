@@ -198,7 +198,7 @@ function LendingMarket() {
             {assets ? (
               <table className="border-2 border-slate-200 rounded-lg p-12">
                 <tbody>
-                  <tr className="border-b-2 border-slate-300 p-12">
+                  <tr className="border-b-2 border-slate-200 p-12">
                     <th>Market</th>
                     <th>Asset</th>
                     <th>Collateral Factor</th>
@@ -344,7 +344,7 @@ function LendingMarket() {
               <p className="text-xl text-bold m-10 text-black font-semibold">
                 Assets to borrow
               </p>
-              <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-300">
+              <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-200">
 
                       <img src={wBTCLogo} alt="wbtc" className="size-8 mr-2" />
                 <p className="mr-2 font-semibold">WBTC</p>
