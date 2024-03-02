@@ -9,6 +9,8 @@ import { useEffect } from "react";
  */
 import { Progress } from "@material-tailwind/react";
 import Usdc from "../assets/usdc.png";
+import Aave from "../assets/aave.png";
+import Twine from "../assets/twine.png";
 import { useAccount, useWriteContract, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
 import { MetaAccount } from "../abis/MetaAccount";
@@ -187,7 +189,7 @@ function LendingMarket() {
   return (
     <div className="w-9/12">
       <div className="text-black p-10">
-        <h1 className="font-bold"> Lending Markets</h1>
+        <h1 className="font-bold">Lending Market</h1>
         <h2> Use the Aave lending market with additional borrowing limit.</h2>
       </div>
       {account.isConnected ? (
@@ -197,11 +199,15 @@ function LendingMarket() {
               <table className="border-2 border-slate-200 rounded-lg p-12">
                 <tbody>
                   <tr className="border-b-2 border-slate-300 p-12">
+                    <th>Market</th>
                     <th>Asset</th>
                     <th>Collateral Factor</th>
                     <th>Borrow Limit</th>
                   </tr>
                   <tr className="">
+                  <td>
+                      <img src={Aave} alt="aave" className="size-8" />
+                    </td>
                     <td>
                       <img src={Usdc} alt="usdc" className="size-8" />
                     </td>
@@ -211,41 +217,52 @@ function LendingMarket() {
                         <p>
                           $
                           {Math.round(Number(formatUnits(assets, decimals)) *
-                            (aaveCF)).toString()}
-                          / ${Math.round(formatUnits(assets, decimals)).toString()}
+                            (aaveCF)).toString()} / ${Math.round(formatUnits(assets, decimals)).toString()}
                         </p>
                       </div>
                       <progress value={0.85} className="" id="aavesupplyprogress" />
                     </td>
-                    <td className="flex flex-col">
-                      <div className="flex flex-row">
-                        <p className="font-bold mr-4">50%</p>
-                        <p>
-                      {/*     {BigInt((user_borrow_native / decs) * (wbtcPrice / BigInt(10 ** 18))).toString()}/ */} $
-                          {Math.round(Number(formatUnits(assets, decimals)) *
-                            (twineCF + aaveCF)).toString()}
+                    <td>
+                    <div className="flex flex-row">
+                    <p className="font-bold mr-4">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString())}% </p>
+                          <p> $50
+                          / ${Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString()}
+
                         </p>
-                      </div>
-                      <progress value={0.5} className="" id="borrowprogress" />
+                        </div>
+                      <progress value={
+                        50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF))
+                      } className="" id="borrowprogress" />
                     </td>
                   </tr>
                   <tr>
-                    <td></td>
+                  <td>
+                      <img src={Twine} alt="twine" className="size-8" />
+                    </td>
+                    <td>
+                      <img src={Usdc} alt="usdc" className="size-8" />
+                    </td>
                     <td>
                        <div className="flex flex-row">
-                        <p className="font-bold mr-4">95%</p>
+                        <p className="font-bold mr-4">95%</p>          
                         <p>
                           $
                           {Math.round(Number(formatUnits(assets, decimals)) *
-                            (twineCF + aaveCF)).toString()}
-                          / ${Math.round(formatUnits(assets, decimals)).toString()}
+                            (twineCF + aaveCF)).toString()} / ${Math.round(formatUnits(assets, decimals)).toString()}
                         </p>
                       </div>
                       <progress value={0.95} className="" id="twinesupplyprogress" />
                     </td>
                     <td>
-
-                      <progress value={0.5} className="" id="borrowprogress" />
+                    <div className="flex flex-row">
+                    <p className="font-bold mr-4">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString())}% </p>
+                          <p> $50
+                          / ${Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString()}
+                        </p>
+                        </div>
+                      <progress value={
+                        50/ Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF))
+                      } className="" id="borrowprogress" />
                     </td>
                   </tr>
                 </tbody>

@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .logo {
@@ -15,33 +15,36 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 #aavesupplyprogress::-webkit-progress-value {
   background:  #72D1F5; 
   border-radius: 10px 0 0 10px;
+    /* height:20px; */
+    /* width: 200px; */
 }
 #twinesupplyprogress::-webkit-progress-value {
   background: #A6FFCA; 
   border-radius: 10px 0 0 10px;
+  /* height:20px; */
+  /* width: 200px; */
 }
-#supplyprogress {
 
-}
 #aavesupplyprogress::-webkit-progress-bar {
   background: lightgray;
   border-radius: 10px;
-  height:20px;
-  width: 200px;
+  /* height:20px; */
+  /* width: 200px; */
 
 }
 #twinesupplyprogress::-webkit-progress-bar {
   background: lightgray;
   border-radius: 10px;
-  height:20px;
-  width: 200px;
+  /* height:20px; */
+  /* width: 200px; */
 
 }
 td{
-  padding: 30px;
+  padding: 20px;
 } 
 th{
   padding: 20px;
@@ -58,37 +61,38 @@ table {
 #borrowprogress::-webkit-progress-bar {
   background: lightgray;
   border-radius: 10px;
-  height:30px;
-  width: 200px;
-
+  /* height:30px; */
+  /* width: 200px; */
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Set a consistent box-sizing */
+* {
+  box-sizing: border-box;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Table layout with fixed widths for columns */
+table {
+  width: 100%; /* Adjust as needed */
+  /* table-layout: fixed; /*This ensures consistent column widths */
+  
+  border-radius: 30px; /* Keep your rounded corners */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Table headers and cells with consistent padding and text alignment */
+th,
+td {
+  padding: 20px; /* Adjust the padding as needed */
+  text-align: left; /* Use 'center' or 'right' as needed */
+  vertical-align: middle; /* Aligns content in the middle vertically */
 }
 
-.card {
-  padding: 2em;
+/* Headers for specific columns can have specific widths */
+th.market-column {
+  width: 20%; /* Adjust as needed */
 }
 
-.read-the-docs {
-  color: #888;
+th.asset-column {
+  width: 20%; /* Adjust as needed */
 }
+
+
