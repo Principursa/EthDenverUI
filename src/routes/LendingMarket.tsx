@@ -24,6 +24,10 @@ const erc20abi = parseAbi([
   "function decimals() public view returns(uint8)",
 ]);
 
+const metaAccountAbi = parseAbi([
+  "function deposit(uint256 assets, address receiver) public returns (uint256)",
+]);
+
 function LendingMarket() {
   const account = useAccount();
   const twineCF = 0.1;
@@ -31,9 +35,7 @@ function LendingMarket() {
   //console.log(formattedPoolReserves);
 
   const { isPending, writeContract, isError, error } = useWriteContract();
-  console.log("isError", isError);
-  console.log("error", error);
-  console.log(isPending);
+  console.dir(error);
 
   const { data: balance } = useReadContract({
     abi: erc20abi,
@@ -92,13 +94,20 @@ function LendingMarket() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const amount = formData.get("amount") as string;
-
-    writeContract({
+    try {
+  writeContract({
       abi: MetaAccount,
       address: Contracts.metaAccount,
       functionName: "deposit",
       args: [BigInt(amount), account.address],
     });
+
+    } catch (err){
+      console.dir(err)
+
+    }
+
+  
   }
   async function submitMetaAccountWithdrawal(
     e: React.FormEvent<HTMLFormElement>
@@ -171,11 +180,12 @@ function LendingMarket() {
                     </td>
                     <td className="flex flex-col">
                       <div className="flex flex-row">
-
                         <p className="font-bold mr-4">50%</p>
-                        <p>$80/
-                        ${Number(formatUnits(assets, decimals)) *
-                          (twineCF + aaveCF).toString()}</p>
+                        <p>
+                          $80/ $
+                          {Number(formatUnits(assets, decimals)) *
+                            (twineCF + aaveCF).toString()}
+                        </p>
                       </div>
                       <progress value={0.5} className="" id="borrowprogress" />
                     </td>
@@ -207,7 +217,7 @@ function LendingMarket() {
                   >
                     <input
                       name="amount"
-                      placeholder="1"
+                      placeholder="Approval amount"
                       required
                       className="bg-white"
                     />
@@ -225,9 +235,9 @@ function LendingMarket() {
                     onSubmit={submitMetaAccountDeposit}
                     className="flex flex-col"
                   >
-                    <input name="amount" placeholder="1" className="bg-white" />
+                    <input name="amount" placeholder="Deposit Amount" className="bg-white" />
                     <button
-                      className="text-black border-2 shadow-md border-slate-300"
+                      className="text-black border-2 shadow-md border-green-300"
                       type="submit"
                       disabled={isPending}
                     >

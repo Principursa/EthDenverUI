@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bunx --bun vite",
-    "tw": "bun tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
-    "build": "tsc && vite build",
+    "dev": "bun tailwindcss -i ./src/index.css -o ./dist/output.css && bunx --bun vite",
+    "tw": "bun tailwindcss -i ./src/index.css -o ./dist/output.css ",
+    "build": "bun tailwindcss -i ./src/index.css -o ./dist/output.css && tsc && vite build && bun tailwindcss -i .src/index.css -o ./dist/output.css --watch",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
