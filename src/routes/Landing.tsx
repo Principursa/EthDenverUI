@@ -9,17 +9,17 @@ function Landing() {
           <li>
             <Link
               to={`/app/vaults`}
-              className="text-black hover:bg-green-300  hover:text-white text-xl font-bold  bg-white shadow-md box-border p-3 border-2 rounded-lg m-2 ease-in-out duration-500"
+              className="text-black hover:bg-emerald-200  hover:text-white text-xl font-bold  bg-white shadow-md box-border p-3 border-2 rounded-lg m-2 ease-in-out duration-500"
             >
-               enTwyne yourself
+               enTwyne Yourself
             </Link>
           </li>
         </ul>
       </div>
       <img src={Splash} alt="splash" className="h-3/4" />
-      <div className="text-black">
-        <p>Twine is a non-custodial credit lending platform.</p>
-        <p>We offer Margin provisioning and LTV optimization.</p>
+      <div className="text-black mt-5">
+        <h2 className="font-semibold">Twyne is a non-custodial credit lending platform.</h2>
+        <h2 className="font-semibold">We offer Margin provisioning and LTV optimization.</h2>
       </div>
     </div>
   );

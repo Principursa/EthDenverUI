@@ -9,15 +9,17 @@ import { useEffect } from 'react';
  */
 import { Progress } from "@material-tailwind/react";
 import Usdc from "../assets/usdc.png";
+import Aave from "../assets/aave.png";
+import Twine from "../assets/twine.png";
 import { useAccount, useWriteContract, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
 import { MetaAccount } from "../abis/MetaAccount";
 import BigNumber from 'bignumber.js';
-
+import wBTCLogo from "../assets/wrapped-bitcoin-wbtc-logo.png"
 
 import { Contracts } from "../abis/Twine";
 
-import { parseAbi } from "viem";
+import { parseAbi ,parseUnits} from "viem";
 
 const erc20abi = parseAbi([
   "function balanceOf(address owner) view returns (uint256)",
@@ -29,6 +31,7 @@ const erc20abi = parseAbi([
 const oracleAbi = parseAbi([
   "function getAssetPrice(address asset) external view returns (uint256)"
 ])
+
 
 
 function LendingMarket() {
@@ -111,9 +114,11 @@ function LendingMarket() {
   var decs: BigInt = BigInt(10 ** 8)
   // console.log("decs", decs)
 
+
   //var user_borrow_scaled_native = user_borrow_native / decs
   //var user_borrow_usd = user_borrow_scaled_native * (wbtcPrice / (10 ** 18))
 
+  console.log("wbtcPrice",wbtcPrice)
 
   async function submitMetaAccountApproval(
     e: React.FormEvent<HTMLFormElement>
@@ -216,7 +221,7 @@ function LendingMarket() {
   return (
     <div className="w-9/12">
       <div className="text-black p-10">
-        <h1 className="font-bold"> Lending Markets</h1>
+        <h1 className="font-bold">Lending Market</h1>
         <h2> Use the Aave lending market with additional borrowing limit.</h2>
       </div>
       {account.isConnected ? (
@@ -225,18 +230,22 @@ function LendingMarket() {
             {assets ? (
               <table className="border-2 border-slate-200 rounded-lg p-12">
                 <tbody>
-                  <tr className="border-b-2 border-slate-300 p-12">
+                  <tr className="border-b-2 border-slate-200 p-12">
+                    <th>Market</th>
                     <th>Asset</th>
                     <th>Collateral Factor</th>
                     <th>Borrow Limit</th>
                   </tr>
                   <tr className="">
+                  <td>
+                      <img src={Aave} alt="aave" className="size-8" />
+                    </td>
                     <td>
                       <img src={Usdc} alt="usdc" className="size-8" />
                     </td>
                     <td className="">
                       <div className="flex flex-row">
-                        <p className="font-bold mr-4">85%</p>
+                      <p className="font-bold mr-4 text-2xl">85%</p>
                         <p>
                           $
                           {Math.round(Number(formatUnits(assets, usdcDecimals)) *
@@ -254,12 +263,19 @@ function LendingMarket() {
                           {Math.round(Number(formatUnits(assets, wbtcDecimals)) *
                             (twineCF + aaveCF)).toString()}
                         </p>
-                      </div>
-                      <progress value={0.5} className="" id="borrowprogress" />
+                        </div>
+                      <progress value={
+                        50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF))
+                      } className="" id="borrowprogress" />
                     </td>
                   </tr>
                   <tr>
-                    <td></td>
+                  <td>
+                      <img src={Twine} alt="twine" className="size-8" />
+                    </td>
+                    <td>
+                      <img src={Usdc} alt="usdc" className="size-8" />
+                    </td>
                     <td>
                       <div className="flex flex-row">
                         <p className="font-bold mr-4">95%</p>
@@ -273,8 +289,15 @@ function LendingMarket() {
                       <progress value={0.95} className="" id="twinesupplyprogress" />
                     </td>
                     <td>
-
-                      <progress value={0.5} className="" id="borrowprogress" />
+                    <div className="flex flex-row">
+                    <p className="font-bold mr-4 text-2xl">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString())}% </p>
+                          <p> $50
+                          / ${Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString()}
+                        </p>
+                        </div>
+                      <progress value={
+                        50/ Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF))
+                      } className="" id="borrowprogress" />
                     </td>
                   </tr>
                 </tbody>
@@ -295,7 +318,8 @@ function LendingMarket() {
                 Assets to supply
               </p>
               <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-300">
-                <p className="m-2">USDC</p>
+                      <img src={Usdc} alt="usdc" className="size-8" />
+                <p className="m-2 font-semibold">USDC</p>
                 <p>16.05%</p>
                 <div>
                   <form
@@ -309,7 +333,7 @@ function LendingMarket() {
                       className="bg-white"
                     />
                     <button
-                      className="text-black border-2 shadow-md border-slate-300"
+                      className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                       type="submit"
                       disabled={isPending}
                     >
@@ -324,7 +348,7 @@ function LendingMarket() {
                   >
                     <input name="amount" placeholder="Deposit Amount" className="bg-white" />
                     <button
-                      className="text-black border-2 shadow-md border-green-300"
+                      className="text-black border-2 shadow-md border-slate-300 hover:border-emerald-300"
                       type="submit"
                       disabled={isPending}
                     >
@@ -337,9 +361,9 @@ function LendingMarket() {
                     onSubmit={submitMetaAccountWithdrawal}
                     className="flex flex-col"
                   >
-                    <input name="amount" placeholder="1" className="bg-white" />
+                    <input name="amount" placeholder="Withdraw Amount" className="bg-white" />
                     <button
-                      className="text-black border-2 shadow-md border-slate-300"
+                      className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                       type="submit"
                       disabled={isPending}
                     >
@@ -354,8 +378,10 @@ function LendingMarket() {
               <p className="text-xl text-bold m-10 text-black font-semibold">
                 Assets to borrow
               </p>
-              <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-300">
-                <p>WBTC</p>
+              <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-200">
+
+                      <img src={wBTCLogo} alt="wbtc" className="size-8 mr-2" />
+                <p className="mr-2 font-semibold">WBTC</p>
                 <p>1.00%</p>
                 <div>
                   <form onSubmit={submitBorrow} className="flex flex-col">
@@ -370,7 +396,7 @@ function LendingMarket() {
                       className="bg-white mb-2"
                     />
                     <button
-                      className="text-black border-2 shadow-md border-slate-300"
+                      className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                       type="submit"
                       disabled={isPending}
                     >
@@ -390,3 +416,4 @@ function LendingMarket() {
 }
 
 export default LendingMarket;
+

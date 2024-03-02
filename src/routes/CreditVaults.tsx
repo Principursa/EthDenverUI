@@ -2,6 +2,8 @@
 // @ts-nocheck
 
 import Usdc from "../assets/usdc.png";
+import Twine from "../assets/twine.png";
+import Aave from "../assets/aave.png";
 import { useWriteContract, useReadContract, useAccount } from "wagmi";
 import { ATokenVault } from "../abis/ATokenVault";
 import { Contracts } from "../abis/Twine";
@@ -152,42 +154,34 @@ function CreditVaults() {
       </div>
       {account.isConnected ? (
         <div className="text-black">
-          {assets ? (
-            <ul className="flex flex-row justify-between">
-              Balance: ${formatUnits(assets, decimals).toString()}
-              <li className="m-2"> APY: 1.29%</li>
-            </ul>
-          ) : (
+       {assets ? (
+  <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow">
+    <div className="text-xl font-bold text-gray-800">
+      Balance: ${formatUnits(assets, decimals).toString()}
+    </div>
+  </div> ) : (
             <div>No MetaAccount Position Yet!</div>
           )}
-          <div className="mt-10 border-4 border-slate-300 rounded-lg text-black">
+          <div className="mt-10 border-2 border-slate-200 rounded-lg text-black">
             <table className="bg-white  text-black">
               <tbody>
-                <tr className="bg-white ">
+                <tr className="bg-white border-b-2 border-slate-200 p-12 ">
                   <th scope="col" className="p-5">
                     Asset
                   </th>
-                  <th scope="col">Apy</th>
+                  <th scope="col">Aave + Twine APY</th>
                   <th scope="col" className="p-5">
-                    CF
+                    Collateral Factor
                   </th>
                   <th scope="col">Risk</th>
-                  <th scope="col" className="p-5">
-                    Credit Liquidity
-                  </th>
                 </tr>
                 <tr className="">
                   <td scope="row" className="p-5">
                     <img src={Usdc} alt="usdc" className="size-8" />
-                  </td>
+                   </td>
                   <td className="">
                     <div className="m-5">
-                      <p>5%</p>
-                      <p>Aave</p>
-                    </div>
-                    <div>
-                      <p>10%</p>
-                      <p>Twine</p>
+                      <p>25%</p>
                     </div>
                   </td>
                   <td className="m-5">
@@ -204,12 +198,12 @@ function CreditVaults() {
               <form onSubmit={submitApproval} className="flex flex-col">
                 <input
                   name="amount"
-                  placeholder="1"
+                  placeholder="Approval amount"
                   required
                   className="bg-white"
                 />
                 <button
-                  className="text-black border-2 shadow-md border-slate-300"
+                  className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                   type="submit"
                   disabled={isPending}
                 >
@@ -222,9 +216,9 @@ function CreditVaults() {
                 onSubmit={submitUnderlyingDeposit}
                 className="flex flex-col"
               >
-                <input name="amount" placeholder="1" className="bg-white" />
+                <input name="amount" placeholder="Deposit amount" className="bg-white" />
                 <button
-                  className="text-black border-2 shadow-md border-slate-300"
+                  className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                   type="submit"
                   disabled={isPending}
                 >
@@ -234,9 +228,9 @@ function CreditVaults() {
             </td>
             <td>
               <form onSubmit={submitWithdraw} className="flex flex-col">
-                <input name="amount" placeholder="1" className="bg-white" />
+                <input name="amount" placeholder="Withdrawal amount" className="bg-white" />
                 <button
-                  className="text-black border-2 shadow-md border-slate-300"
+                  className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                   type="submit"
                   disabled={isPending}
                 >
