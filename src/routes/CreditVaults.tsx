@@ -191,7 +191,7 @@ function CreditVaults() {
                     </div>
                   </td>
                   <td className="m-5">
-                    85%>95%
+                    85% -{'>'} 95%
                   </td>
                   <td>Medium</td>
                   {totalAssets}
