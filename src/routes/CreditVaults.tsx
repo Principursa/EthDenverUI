@@ -159,14 +159,13 @@ function CreditVaults() {
     <div className="text-xl font-bold text-gray-800">
       Balance: ${formatUnits(assets, decimals).toString()}
     </div>
-  </div>
-          ) : (
+  </div> ) : (
             <div>No MetaAccount Position Yet!</div>
           )}
-          <div className="mt-10 border-4 border-slate-300 rounded-lg text-black">
+          <div className="mt-10 border-2 border-slate-200 rounded-lg text-black">
             <table className="bg-white  text-black">
               <tbody>
-                <tr className="bg-white ">
+                <tr className="bg-white border-b-2 border-slate-200 p-12 ">
                   <th scope="col" className="p-5">
                     Asset
                   </th>
@@ -199,12 +198,12 @@ function CreditVaults() {
               <form onSubmit={submitApproval} className="flex flex-col">
                 <input
                   name="amount"
-                  placeholder="1"
+                  placeholder="Approval amount"
                   required
                   className="bg-white"
                 />
                 <button
-                  className="text-black border-2 shadow-md border-slate-300"
+                  className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                   type="submit"
                   disabled={isPending}
                 >
@@ -217,9 +216,9 @@ function CreditVaults() {
                 onSubmit={submitUnderlyingDeposit}
                 className="flex flex-col"
               >
-                <input name="amount" placeholder="1" className="bg-white" />
+                <input name="amount" placeholder="Deposit amount" className="bg-white" />
                 <button
-                  className="text-black border-2 shadow-md border-slate-300"
+                  className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                   type="submit"
                   disabled={isPending}
                 >
@@ -229,9 +228,9 @@ function CreditVaults() {
             </td>
             <td>
               <form onSubmit={submitWithdraw} className="flex flex-col">
-                <input name="amount" placeholder="1" className="bg-white" />
+                <input name="amount" placeholder="Withdrawal amount" className="bg-white" />
                 <button
-                  className="text-black border-2 shadow-md border-slate-300"
+                  className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                   type="submit"
                   disabled={isPending}
                 >

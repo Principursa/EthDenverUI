@@ -11,7 +11,7 @@ function App() {
           <li className="text-black">
             <Link
               to={"/"}
-              className="text-black hover:text-cyan-300 text-m font-bold m-2"
+              className="text-black hover:text-emerald-300 text-m font-bold m-2"
             >
               Twyne
             </Link>
@@ -19,7 +19,7 @@ function App() {
           <li>
             <Link
               to={`markets`}
-              className="text-black hover:text-cyan-300 text-m "
+              className="text-black hover:text-emerald-300 text-m "
             >
               Lending Markets
             </Link>
@@ -28,14 +28,14 @@ function App() {
           <li className="">
             <Link
               to={`vaults`}
-              className="text-black hover:text-cyan-300 text-m m-2"
+              className="text-black hover:text-emerald-300 text-m m-2"
             >
               Credit Vaults
             </Link>
           </li>
 
-          <li>
-            <ConnectButton />
+          <li className="mb-4">
+            <ConnectButton/>
           </li>
         </ul>
       </div>
