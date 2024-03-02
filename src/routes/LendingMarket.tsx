@@ -12,10 +12,11 @@ import Usdc from "../assets/usdc.png";
 import { useAccount, useWriteContract, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
 import { MetaAccount } from "../abis/MetaAccount";
+import wBTCLogo from "../assets/wrapped-bitcoin-wbtc-logo.png"
 
 import { Contracts } from "../abis/Twine";
 
-import { parseAbi } from "viem";
+import { parseAbi ,parseUnits} from "viem";
 
 const erc20abi = parseAbi([
   "function balanceOf(address owner) view returns (uint256)",
@@ -29,7 +30,7 @@ const oracleAbi = parseAbi([
 ])
 
 
-const wbtcPrice = BigInt(62000 * (10**18))
+const wbtcPrice = parseUnits('62000',18)
 
 
 function LendingMarket() {
@@ -100,14 +101,15 @@ function LendingMarket() {
   console.log("metaBalance",metaBalance)
   console.log("totalBorrowShares",totalBorrowShares)
   console.log("BorrowSharesPerUser",borrowSharesPerBorrower)
-  var user_borrow_native: BigInt = (metaBalance * borrowSharesPerBorrower / totalBorrowShares)
-  console.log("user_borrow_native",user_borrow_native)
-  var decs: BigInt = BigInt(10 ** 8)
+  //var user_borrow_native: BigInt = (metaBalance * borrowSharesPerBorrower / totalBorrowShares)
+  //console.log("user_borrow_native",user_borrow_native)
+  var decs: BigInt = parseUnits('10',8)
   console.log("decs",decs)
 
   //var user_borrow_scaled_native = user_borrow_native / decs
   //var user_borrow_usd = user_borrow_scaled_native * (wbtcPrice / (10 ** 18))
 
+  console.log("wbtcPrice",wbtcPrice)
 
   async function submitMetaAccountApproval(
     e: React.FormEvent<HTMLFormElement>
@@ -130,7 +132,6 @@ function LendingMarket() {
     const amount = formData.get("amount") as string;
     const BigAmount = BigInt(amount * (10 ** decimals))
 
-
     try {
   writeContract({
       abi: MetaAccount,
@@ -143,7 +144,6 @@ function LendingMarket() {
       console.dir(err)
 
     }
-
   
   }
   async function submitMetaAccountWithdrawal(
@@ -221,7 +221,7 @@ function LendingMarket() {
                       <div className="flex flex-row">
                         <p className="font-bold mr-4">50%</p>
                         <p>
-                          {() => BigInt((user_borrow_native / decs) * (wbtcPrice / BigInt(10 ** 18))).toString()}/ $
+                      {/*     {BigInt((user_borrow_native / decs) * (wbtcPrice / BigInt(10 ** 18))).toString()}/ */} $
                           {Math.round(Number(formatUnits(assets, decimals)) *
                             (twineCF + aaveCF)).toString()}
                         </p>
@@ -266,7 +266,9 @@ function LendingMarket() {
                 Assets to supply
               </p>
               <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-300">
-                <p className="m-2">USDC</p>
+
+                      <img src={Usdc} alt="usdc" className="size-8" />
+                <p className="m-2 font-semibold">USDC</p>
                 <p>16.05%</p>
                 <div>
                   <form
@@ -280,7 +282,7 @@ function LendingMarket() {
                       className="bg-white"
                     />
                     <button
-                      className="text-black border-2 shadow-md border-slate-300"
+                      className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                       type="submit"
                       disabled={isPending}
                     >
@@ -295,7 +297,7 @@ function LendingMarket() {
                   >
                     <input name="amount" placeholder="Deposit Amount" className="bg-white" />
                     <button
-                      className="text-black border-2 shadow-md border-green-300"
+                      className="text-black border-2 shadow-md border-slate-300 hover:border-emerald-300"
                       type="submit"
                       disabled={isPending}
                     >
@@ -308,9 +310,9 @@ function LendingMarket() {
                     onSubmit={submitMetaAccountWithdrawal}
                     className="flex flex-col"
                   >
-                    <input name="amount" placeholder="1" className="bg-white" />
+                    <input name="amount" placeholder="Withdraw Amount" className="bg-white" />
                     <button
-                      className="text-black border-2 shadow-md border-slate-300"
+                      className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                       type="submit"
                       disabled={isPending}
                     >
@@ -326,7 +328,9 @@ function LendingMarket() {
                 Assets to borrow
               </p>
               <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-300">
-                <p>WBTC</p>
+
+                      <img src={wBTCLogo} alt="wbtc" className="size-8 mr-2" />
+                <p className="mr-2 font-semibold">WBTC</p>
                 <p>1.00%</p>
                 <div>
                   <form onSubmit={submitBorrow} className="flex flex-col">
@@ -336,7 +340,7 @@ function LendingMarket() {
                       className="bg-white"
                     />
                     <button
-                      className="text-black border-2 shadow-md border-slate-300"
+                      className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                       type="submit"
                       disabled={isPending}
                     >
