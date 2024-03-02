@@ -265,7 +265,7 @@ function LendingMarket() {
                         </p>
                         </div>
                       <progress value={
-                        50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF))
+                        50/Math.round(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF))
                       } className="" id="borrowprogress" />
                     </td>
                   </tr>
@@ -290,13 +290,13 @@ function LendingMarket() {
                     </td>
                     <td>
                     <div className="flex flex-row">
-                    <p className="font-bold mr-4 text-2xl">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString())}% </p>
+                    <p className="font-bold mr-4 text-2xl">{Math.round(100*50/Math.round(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF)).toString())}% </p>
                           <p> $50
-                          / ${Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString()}
+                          / ${Math.round(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF)).toString()}
                         </p>
                         </div>
                       <progress value={
-                        50/ Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF))
+                        50/ Math.round(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF))
                       } className="" id="borrowprogress" />
                     </td>
                   </tr>
