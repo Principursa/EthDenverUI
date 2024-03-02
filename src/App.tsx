@@ -34,8 +34,8 @@ function App() {
             </Link>
           </li>
 
-          <li>
-            <ConnectButton />
+          <li className="mb-4">
+            <ConnectButton/>
           </li>
         </ul>
       </div>
