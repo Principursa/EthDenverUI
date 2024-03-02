@@ -154,12 +154,12 @@ function CreditVaults() {
       </div>
       {account.isConnected ? (
         <div className="text-black">
-          {assets ? (
-            <ul className="flex flex-row justify-between text-semibold text-l">
-              Balance: ${Math.round(formatUnits(assets, decimals)).toString()}
-              <li className="m-2"> APY: 1.29%</li>
-            </ul>
-          ) : (
+       {assets ? (
+  <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow">
+    <div className="text-xl font-bold text-gray-800">
+      Balance: ${formatUnits(assets, decimals).toString()}
+    </div>
+  </div> ) : (
             <div>No MetaAccount Position Yet!</div>
           )}
           <div className="mt-10 border-2 border-slate-200 rounded-lg text-black">
