@@ -15,17 +15,28 @@
   will-change: filter;
   transition: filter 300ms;
 }
-#supplyprogress::-webkit-progress-value {
-  background: linear-gradient(to right, #72D1F5 85%, #A6FFCA 10%);
+#aavesupplyprogress::-webkit-progress-value {
+  background:  #72D1F5; 
+  border-radius: 10px 0 0 10px;
+}
+#twinesupplyprogress::-webkit-progress-value {
+  background: #A6FFCA; 
   border-radius: 10px 0 0 10px;
 }
 #supplyprogress {
 
 }
-#supplyprogress::-webkit-progress-bar {
+#aavesupplyprogress::-webkit-progress-bar {
   background: lightgray;
   border-radius: 10px;
-  height:30px;
+  height:20px;
+  width: 200px;
+
+}
+#twinesupplyprogress::-webkit-progress-bar {
+  background: lightgray;
+  border-radius: 10px;
+  height:20px;
   width: 200px;
 
 }
