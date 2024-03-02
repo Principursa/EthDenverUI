@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 /* import {
   fetchContractData,
   formattedPoolReserves,
@@ -14,6 +14,7 @@ import Twine from "../assets/twine.png";
 import { useAccount, useWriteContract, useReadContract } from "wagmi";
 import { formatUnits } from "viem";
 import { MetaAccount } from "../abis/MetaAccount";
+import BigNumber from 'bignumber.js';
 import wBTCLogo from "../assets/wrapped-bitcoin-wbtc-logo.png"
 
 import { Contracts } from "../abis/Twine";
@@ -28,11 +29,9 @@ const erc20abi = parseAbi([
 ]);
 
 const oracleAbi = parseAbi([
-"function getAssetPrice(address asset) external view returns (uint256)"
+  "function getAssetPrice(address asset) external view returns (uint256)"
 ])
 
-
-const wbtcPrice = parseUnits('62000',18)
 
 
 function LendingMarket() {
@@ -41,8 +40,8 @@ function LendingMarket() {
   const aaveCF = 0.85;
   //console.log(formattedPoolReserves);
 
-  const { isPending, writeContract, isError, error} = useWriteContract();
-  console.log("isPending",isPending)
+  const { isPending, writeContract, isError, error } = useWriteContract();
+  console.log("isPending", isPending)
 
   const { data: balance } = useReadContract({
     abi: erc20abi,
@@ -57,9 +56,15 @@ function LendingMarket() {
     args: [account.address],
   });
 
-  const { data: decimals } = useReadContract({
+  const { data: usdcDecimals } = useReadContract({
     abi: erc20abi,
     address: Contracts.usdc,
+    functionName: "decimals",
+    args: [],
+  });
+  const { data: wbtcDecimals } = useReadContract({
+    abi: erc20abi,
+    address: Contracts.wbtc,
     functionName: "decimals",
     args: [],
   });
@@ -76,37 +81,39 @@ function LendingMarket() {
     functionName: "creditBorrowSharesPerBorrower",
     args: [account.address],
   });
-  const {data: getAssetPrice } = useReadContract({
-    abi:oracleAbi,
-    address: Contracts.oracle,
-    functionName: "getAssetPrice",
-    args: [Contracts.wbtc]
-  })
-  const {data: metaBalance} = useReadContract({
-    abi:erc20abi,
-    address:Contracts.vdwbtc,
+  // const { data: wbtcPrice } = useReadContract({
+  //   abi: oracleAbi,
+  //   address: Contracts.oracle,
+  //   functionName: "getAssetPrice",
+  //   args: [Contracts.wbtc]
+  // })
+  const wbtcPrice = BigNumber(60000 * 10 ** 18);
+  const { data: metaBalance } = useReadContract({
+    abi: erc20abi,
+    address: Contracts.vdwbtc,
     functionName: "balanceOf",
     args: [Contracts.metaAccount]
   })
-  const {data: totalBorrowShares} = useReadContract({
+  const { data: totalBorrowShares } = useReadContract({
     abi: MetaAccount,
     address: Contracts.metaAccount,
     functionName: "totalBorrowShares",
     args: []
   })
-  const {data: borrowSharesPerBorrower} = useReadContract({
+  const { data: borrowSharesPerBorrower } = useReadContract({
     abi: MetaAccount,
     address: Contracts.metaAccount,
     functionName: "borrowSharesPerBorrower",
-    args:[account.address]
+    args: [account.address]
   })
-  console.log("metaBalance",metaBalance)
-  console.log("totalBorrowShares",totalBorrowShares)
-  console.log("BorrowSharesPerUser",borrowSharesPerBorrower)
-  //var user_borrow_native: BigInt = (metaBalance * borrowSharesPerBorrower / totalBorrowShares)
-  //console.log("user_borrow_native",user_borrow_native)
-  var decs: BigInt = parseUnits('10',8)
-  console.log("decs",decs)
+  // console.log("metaBalance", metaBalance)
+  // console.log("totalBorrowShares", totalBorrowShares)
+  // console.log("BorrowSharesPerUser", borrowSharesPerBorrower)
+  var user_borrow_native: BigInt = (metaBalance * borrowSharesPerBorrower / totalBorrowShares)
+  // console.log("user_borrow_native", user_borrow_native)
+  var decs: BigInt = BigInt(10 ** 8)
+  // console.log("decs", decs)
+
 
   //var user_borrow_scaled_native = user_borrow_native / decs
   //var user_borrow_usd = user_borrow_scaled_native * (wbtcPrice / (10 ** 18))
@@ -119,34 +126,34 @@ function LendingMarket() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const amount = formData.get("amount") as string;
-    const BigAmount = BigInt(amount * (10 ** decimals))
+    const BigAmount = BigInt(Math.round(parseFloat(amount) * (10 ** Number(usdcDecimals))));
 
     writeContract({
       abi: erc20abi,
       address: Contracts.usdc,
       functionName: "approve",
-      args: [Contracts.metaAccount,BigAmount],
+      args: [Contracts.metaAccount, BigAmount],
     });
   }
   async function submitMetaAccountDeposit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const amount = formData.get("amount") as string;
-    const BigAmount = BigInt(amount * (10 ** decimals))
+    const amount = formData.get("amount") as string; // This is a string that could represent a float, e.g., "123.456"
+
+    // Convert the string to a float, then scale it by 10^decimals and convert to BigInt
+    // This handles the conversion from a human-readable float to the integer representation expected by the contract
+    const BigAmount = BigInt(Math.round(parseFloat(amount) * (10 ** Number(usdcDecimals))));
 
     try {
-  writeContract({
-      abi: MetaAccount,
-      address: Contracts.metaAccount,
-      functionName: "deposit",
-      args: [BigAmount, account.address],
-    });
-
-    } catch (err){
-      console.dir(err)
-
+      writeContract({
+        abi: MetaAccount,
+        address: Contracts.metaAccount,
+        functionName: "deposit",
+        args: [BigAmount, account.address],
+      });
+    } catch (err) {
+      console.dir(err);
     }
-  
   }
   async function submitMetaAccountWithdrawal(
     e: React.FormEvent<HTMLFormElement>
@@ -154,7 +161,7 @@ function LendingMarket() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const amount = formData.get("amount") as string;
-    const BigAmount = BigInt(amount * (10 ** decimals))
+    const BigAmount = BigInt(Math.round(parseFloat(amount) * (10 ** Number(usdcDecimals))));
 
     writeContract({
       abi: MetaAccount,
@@ -166,15 +173,40 @@ function LendingMarket() {
 
   async function submitBorrow(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const bAmount = formData.get("bAmount") as string;
 
+    // Retrieve the values directly from the event target
+    const tokenBorrowAmountElement = document.querySelector('[name="tokenBorrowAmount"]') as HTMLInputElement;
+    const creditBorrowAmountElement = document.querySelector('[name="creditBorrowAmount"]') as HTMLInputElement;
 
+    // Check if both inputs have values
+    if (!tokenBorrowAmountElement.value || !creditBorrowAmountElement.value) {
+      alert('Both fields are required');
+      return;
+    }
+
+    // Convert input values to BigNumber for precise arithmetic operations
+    const tokenBorrowAmount = new BigNumber(tokenBorrowAmountElement.value);
+    const wbtcPriceBig = new BigNumber(wbtcPrice); // Assuming wbtcPrice is a string or number variable available in your scope
+    const wbtcDecimalsBig = new BigNumber(10).pow(wbtcDecimals); // Assuming wbtcDecimals is a number variable available in your scope
+
+    // Perform the calculation
+    const tokenAmount = tokenBorrowAmount
+      .dividedBy(wbtcPriceBig.dividedBy(new BigNumber(10).pow(18)))
+      .multipliedBy(wbtcDecimalsBig);
+
+    // For creditAmount, assuming usdcDecimals is a number variable available in your scope
+    const creditAmount = new BigNumber(creditBorrowAmountElement.value).multipliedBy(new BigNumber(10).pow(usdcDecimals));
+
+    const parsedTokenAmount = parseInt(tokenAmount.toString(), 10)
+    const parsedCreditAmount = parseInt(creditAmount.toString(), 10)
+
+    // Now you can use tokenAmount and creditAmount in your writeContract call
+    // Make sure to convert BigNumber values to a format compatible with your contract call, such as string or BigInt
     writeContract({
       abi: MetaAccount,
       address: Contracts.metaAccount,
       functionName: "borrow",
-      args: [BigInt(bAmount), BigInt(bAmount)],
+      args: [parsedTokenAmount, parsedCreditAmount] // Using toFixed() to convert BigNumber to string
     });
   }
 
@@ -183,8 +215,8 @@ function LendingMarket() {
   setdecimals(_decimals)
    */
     // borrowable = Number(formatUnits(assets, decimals)) * (twineCF + aaveCF);
-    return () => {};
-  }, [decimals, balance, assets]);
+    return () => { };
+  }, [wbtcDecimals, balance, assets]);
 
   return (
     <div className="w-9/12">
@@ -216,22 +248,22 @@ function LendingMarket() {
                       <p className="font-bold mr-4 text-2xl">85%</p>
                         <p>
                           $
-                          {Math.round(Number(formatUnits(assets, decimals)) *
-                            (aaveCF)).toString()} / ${Math.round(formatUnits(assets, decimals)).toString()}
+                          {Math.round(Number(formatUnits(assets, usdcDecimals)) *
+                            (aaveCF)).toString()}
+                          / ${Math.round(formatUnits(assets, usdcDecimals)).toString()}
                         </p>
                       </div>
                       <progress value={0.85} className="" id="aavesupplyprogress" />
                     </td>
                     <td>
                     <div className="flex flex-row">
-                    <p className="font-bold mr-4 text-2xl">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString())}% </p>
+                    <p className="font-bold mr-4 text-2xl">{Math.round(50/(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF)*100)*100)}% </p>
                           <p> $50
-                          / ${Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString()}
-
+                          / ${Math.round(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF)*100).toString()}
                         </p>
                         </div>
                       <progress value={
-                        50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF))
+                        50/ Math.round(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF)*100)
                       } className="" id="borrowprogress" />
                     </td>
                   </tr>
@@ -243,25 +275,26 @@ function LendingMarket() {
                       <img src={Usdc} alt="usdc" className="size-8" />
                     </td>
                     <td>
-                       <div className="flex flex-row">
-                       <p className="font-bold mr-4 text-2xl">95%</p>     
+                      <div className="flex flex-row">
+                      <p className="font-bold mr-4 text-2xl">95%</p>
                         <p>
                           $
-                          {Math.round(Number(formatUnits(assets, decimals)) *
-                            (twineCF + aaveCF)).toString()} / ${Math.round(formatUnits(assets, decimals)).toString()}
+                          {Math.round(Number(formatUnits(assets, usdcDecimals)) *
+                            (twineCF + aaveCF)).toString()}
+                          / ${Math.round(formatUnits(assets, usdcDecimals)).toString()}
                         </p>
                       </div>
                       <progress value={0.95} className="" id="twinesupplyprogress" />
                     </td>
                     <td>
                     <div className="flex flex-row">
-                    <p className="font-bold mr-4 text-2xl">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString())}% </p>
+                    <p className="font-bold mr-4 text-2xl">{Math.round(50/(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF)*100)*100)}% </p>
                           <p> $50
-                          / ${Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString()}
+                          / ${Math.round(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF)*100).toString()}
                         </p>
                         </div>
                       <progress value={
-                        50/ Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF))
+                        50/ Math.round(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF)*100)
                       } className="" id="borrowprogress" />
                     </td>
                   </tr>
@@ -282,7 +315,7 @@ function LendingMarket() {
               <p className="text-xl text-bold m-10 text-black font-semibold">
                 Assets to supply
               </p>
-              <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-300">
+              <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-6 border-slate-300">
                       <img src={Usdc} alt="usdc" className="size-8" />
                 <p className="m-2 font-semibold">USDC</p>
                 <p>16.05%</p>
@@ -350,11 +383,18 @@ function LendingMarket() {
                 <p>1.00%</p>
                 <div>
                   <form onSubmit={submitBorrow} className="flex flex-col">
+                    <div className="flex flex-col">
                     <input
-                      name="bAmount"
-                      placeholder="Borrow Amount"
-                      className="bg-white"
+                      name="tokenBorrowAmount"
+                      placeholder="Token Borrow Amount"
+                      className="bg-white mb-2"
                     />
+                    <input
+                      name="creditBorrowAmount"
+                      placeholder="Credit Borrow Amount"
+                      className="bg-white mb-2"
+                    />
+                    </div>
                     <button
                       className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
                       type="submit"
