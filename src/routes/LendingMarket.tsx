@@ -213,7 +213,7 @@ function LendingMarket() {
                     </td>
                     <td className="">
                       <div className="flex flex-row">
-                        <p className="font-bold mr-4">85%</p>
+                      <p className="font-bold mr-4 text-2xl">85%</p>
                         <p>
                           $
                           {Math.round(Number(formatUnits(assets, decimals)) *
@@ -224,7 +224,7 @@ function LendingMarket() {
                     </td>
                     <td>
                     <div className="flex flex-row">
-                    <p className="font-bold mr-4">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString())}% </p>
+                    <p className="font-bold mr-4 text-2xl">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString())}% </p>
                           <p> $50
                           / ${Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString()}
                         </p>
@@ -243,7 +243,7 @@ function LendingMarket() {
                     </td>
                     <td>
                        <div className="flex flex-row">
-                        <p className="font-bold mr-4">95%</p>          
+                       <p className="font-bold mr-4 text-2xl">95%</p>     
                         <p>
                           $
                           {Math.round(Number(formatUnits(assets, decimals)) *
@@ -254,7 +254,7 @@ function LendingMarket() {
                     </td>
                     <td>
                     <div className="flex flex-row">
-                    <p className="font-bold mr-4">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString())}% </p>
+                    <p className="font-bold mr-4 text-2xl">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString())}% </p>
                           <p> $50
                           / ${Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString()}
                         </p>
@@ -372,3 +372,4 @@ function LendingMarket() {
 }
 
 export default LendingMarket;
+
