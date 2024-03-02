@@ -169,14 +169,11 @@ function CreditVaults() {
                   <th scope="col" className="p-5">
                     Asset
                   </th>
-                  <th scope="col">Apy</th>
+                  <th scope="col">Aave + Twine APY</th>
                   <th scope="col" className="p-5">
-                    CF
+                    Collateral Factor
                   </th>
                   <th scope="col">Risk</th>
-                  <th scope="col" className="p-5">
-                    Credit Liquidity
-                  </th>
                 </tr>
                 <tr className="">
                   <td scope="row" className="p-5">
@@ -185,12 +182,7 @@ function CreditVaults() {
                   <td className="">
                     <div className="m-5">
                       <p>25%</p>
-                      <p>Twine + Aave</p>
                     </div>
-                    {/* <div>
-                      <p>10%</p>
-                      <p>Twine</p>
-                    </div> */}
                   </td>
                   <td className="m-5">
                     85% -{'>'} 95%

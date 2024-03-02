@@ -189,7 +189,7 @@ function LendingMarket() {
   return (
     <div className="w-9/12">
       <div className="text-black p-10">
-        <h1 className="font-bold"> Lending Market</h1>
+        <h1 className="font-bold">Lending Market</h1>
         <h2> Use the Aave lending market with additional borrowing limit.</h2>
       </div>
       {account.isConnected ? (
@@ -224,12 +224,14 @@ function LendingMarket() {
                     </td>
                     <td>
                     <div className="flex flex-row">
-                    <p className="font-bold mr-4">50% </p>
+                    <p className="font-bold mr-4">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString())}% </p>
                           <p> $50
                           / ${Math.round(Number(formatUnits(assets, decimals)) * (aaveCF)).toString()}
                         </p>
                         </div>
-                      <progress value={0.5} className="" id="borrowprogress" />
+                      <progress value={
+                        50/Math.round(Number(formatUnits(assets, decimals)) * (aaveCF))
+                      } className="" id="borrowprogress" />
                     </td>
                   </tr>
                   <tr>
@@ -252,12 +254,14 @@ function LendingMarket() {
                     </td>
                     <td>
                     <div className="flex flex-row">
-                    <p className="font-bold mr-4">50% </p>
+                    <p className="font-bold mr-4">{Math.round(100*50/Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString())}% </p>
                           <p> $50
                           / ${Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF)).toString()}
                         </p>
                         </div>
-                      <progress value={0.5} className="" id="borrowprogress" />
+                      <progress value={
+                        50/ Math.round(Number(formatUnits(assets, decimals)) * (twineCF + aaveCF))
+                      } className="" id="borrowprogress" />
                     </td>
                   </tr>
                 </tbody>
