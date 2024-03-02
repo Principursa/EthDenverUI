@@ -104,6 +104,7 @@ function LendingMarket() {
   console.log("user_borrow_native",user_borrow_native)
   var decs: BigInt = BigInt(10 ** 8)
   console.log("decs",decs)
+
   //var user_borrow_scaled_native = user_borrow_native / decs
   //var user_borrow_usd = user_borrow_scaled_native * (wbtcPrice / (10 ** 18))
 
@@ -220,7 +221,7 @@ function LendingMarket() {
                       <div className="flex flex-row">
                         <p className="font-bold mr-4">50%</p>
                         <p>
-                          {BigInt((user_borrow_native / decs) * (wbtcPrice / BigInt(10 ** 18))).toString()}/ $
+                          {() => BigInt((user_borrow_native / decs) * (wbtcPrice / BigInt(10 ** 18))).toString()}/ $
                           {Math.round(Number(formatUnits(assets, decimals)) *
                             (twineCF + aaveCF)).toString()}
                         </p>
