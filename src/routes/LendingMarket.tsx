@@ -34,7 +34,7 @@ function LendingMarket() {
   const aaveCF = 0.85;
   //console.log(formattedPoolReserves);
 
-  const { isPending, writeContract, isError, error } = useWriteContract();
+  const { isPending, writeContract, isError, error} = useWriteContract();
   console.dir(error);
 
   const { data: balance } = useReadContract({
@@ -83,23 +83,28 @@ function LendingMarket() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const amount = formData.get("amount") as string;
+    const BigAmount = BigInt(amount * (10 ** decimals))
+
     writeContract({
       abi: erc20abi,
       address: Contracts.usdc,
       functionName: "approve",
-      args: [Contracts.metaAccount, BigInt(amount)],
+      args: [Contracts.metaAccount,BigAmount],
     });
   }
   async function submitMetaAccountDeposit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const amount = formData.get("amount") as string;
+    const BigAmount = BigInt(amount * (10 ** decimals))
+
+
     try {
   writeContract({
       abi: MetaAccount,
       address: Contracts.metaAccount,
       functionName: "deposit",
-      args: [BigInt(amount), account.address],
+      args: [BigAmount, account.address],
     });
 
     } catch (err){
@@ -115,12 +120,13 @@ function LendingMarket() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const amount = formData.get("amount") as string;
+    const BigAmount = BigInt(amount * (10 ** decimals))
 
     writeContract({
       abi: MetaAccount,
       address: Contracts.metaAccount,
       functionName: "withdraw",
-      args: [BigInt(amount), account.address, account.address],
+      args: [BigAmount, account.address, account.address],
     });
   }
 
@@ -128,6 +134,7 @@ function LendingMarket() {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const bAmount = formData.get("bAmount") as string;
+
 
     writeContract({
       abi: MetaAccount,
@@ -171,9 +178,9 @@ function LendingMarket() {
                         <p className="font-bold mr-4">85%</p>
                         <p>
                           $
-                          {Number(formatUnits(assets, decimals)) *
-                            (twineCF + aaveCF).toString()}
-                          / ${formatUnits(assets, decimals).toString()}
+                          {Math.round(Number(formatUnits(assets, decimals)) *
+                            (twineCF + aaveCF)).toString()}
+                          / ${Math.round(formatUnits(assets, decimals)).toString()}
                         </p>
                       </div>
                       <progress value={0.95} className="" id="supplyprogress" />
@@ -183,8 +190,8 @@ function LendingMarket() {
                         <p className="font-bold mr-4">50%</p>
                         <p>
                           $80/ $
-                          {Number(formatUnits(assets, decimals)) *
-                            (twineCF + aaveCF).toString()}
+                          {Math.round(Number(formatUnits(assets, decimals)) *
+                            (twineCF + aaveCF)).toString()}
                         </p>
                       </div>
                       <progress value={0.5} className="" id="borrowprogress" />
