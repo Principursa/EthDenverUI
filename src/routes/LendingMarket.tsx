@@ -19,7 +19,7 @@ import wBTCLogo from "../assets/wrapped-bitcoin-wbtc-logo.png"
 
 import { Contracts } from "../abis/Twine";
 
-import { parseAbi ,parseUnits} from "viem";
+import { parseAbi, parseUnits } from "viem";
 
 const erc20abi = parseAbi([
   "function balanceOf(address owner) view returns (uint256)",
@@ -36,12 +36,11 @@ const oracleAbi = parseAbi([
 
 function LendingMarket() {
   const account = useAccount();
-  const twineCF = 0.1;
+  // const twineCF = 0.1;
   const aaveCF = 0.85;
   //console.log(formattedPoolReserves);
 
   const { isPending, writeContract, isError, error } = useWriteContract();
-  console.log("isPending", isPending)
 
   const { data: balance } = useReadContract({
     abi: erc20abi,
@@ -74,13 +73,6 @@ function LendingMarket() {
     functionName: "convertToAssets",
     args: [balance],
   });
-
-  const { data: CreditBorrowSharesPerBorrower } = useReadContract({
-    abi: MetaAccount,
-    address: Contracts.metaAccount,
-    functionName: "creditBorrowSharesPerBorrower",
-    args: [account.address],
-  });
   // const { data: wbtcPrice } = useReadContract({
   //   abi: oracleAbi,
   //   address: Contracts.oracle,
@@ -94,6 +86,12 @@ function LendingMarket() {
     functionName: "balanceOf",
     args: [Contracts.metaAccount]
   })
+  const { data: creditBalance } = useReadContract({
+    abi: erc20abi,
+    address: Contracts.creditVault,
+    functionName: "balanceOf",
+    args: [account.address]
+  })
   const { data: totalBorrowShares } = useReadContract({
     abi: MetaAccount,
     address: Contracts.metaAccount,
@@ -106,19 +104,27 @@ function LendingMarket() {
     functionName: "borrowSharesPerBorrower",
     args: [account.address]
   })
-  // console.log("metaBalance", metaBalance)
-  // console.log("totalBorrowShares", totalBorrowShares)
-  // console.log("BorrowSharesPerUser", borrowSharesPerBorrower)
-  var user_borrow_native: BigInt = (metaBalance * borrowSharesPerBorrower / totalBorrowShares)
-  // console.log("user_borrow_native", user_borrow_native)
-  var decs: BigInt = BigInt(10 ** 8)
-  // console.log("decs", decs)
+  const { data: creditVaultSharePerBorrower } = useReadContract({
+    abi: MetaAccount,
+    address: Contracts.metaAccount,
+    functionName: "creditVaultSharePerBorrower",
+    args: [account.address],
+  });
 
+  // borrow balance
+  var user_borrow_native: BigNumber = new BigNumber(metaBalance ? metaBalance.toString() : '0')
+    .multipliedBy(new BigNumber(borrowSharesPerBorrower ? borrowSharesPerBorrower.toString() : '0'))
+    .dividedBy(new BigNumber(totalBorrowShares ? totalBorrowShares.toString() : '1'));
 
-  //var user_borrow_scaled_native = user_borrow_native / decs
-  //var user_borrow_usd = user_borrow_scaled_native * (wbtcPrice / (10 ** 18))
+  var user_borrow_usd: BigNumber = user_borrow_native.multipliedBy(wbtcPrice).dividedBy(new BigNumber(10).pow(18 + wbtcDecimals));
+  const formattedUserBorrowUsd = user_borrow_usd.toFixed(2);
 
-  console.log("wbtcPrice",wbtcPrice)
+  var twineCF: BigNumber = new BigNumber(creditVaultSharePerBorrower?.toString() ?? '0')
+    .dividedBy(new BigNumber(10).pow(6))
+    .dividedBy(new BigNumber(Math.round(Number(formatUnits(assets ?? '0', usdcDecimals)))));
+  var formattedTwineCF = twineCF.toFixed(2);
+  var combinedCF = new BigNumber(formattedTwineCF).plus(aaveCF).toFixed(2);
+
 
   async function submitMetaAccountApproval(
     e: React.FormEvent<HTMLFormElement>
@@ -214,7 +220,7 @@ function LendingMarket() {
     /*  setbalance(_assets)
   setdecimals(_decimals)
    */
-    // borrowable = Number(formatUnits(assets, decimals)) * (twineCF + aaveCF);
+    // borrowable = Number(formatUnits(assets, decimals)) * (combinedCF);
     return () => { };
   }, [wbtcDecimals, balance, assets]);
 
@@ -237,7 +243,7 @@ function LendingMarket() {
                     <th>Borrow Limit</th>
                   </tr>
                   <tr className="">
-                  <td>
+                    <td>
                       <img src={Aave} alt="aave" className="size-8" />
                     </td>
                     <td>
@@ -245,7 +251,7 @@ function LendingMarket() {
                     </td>
                     <td className="">
                       <div className="flex flex-row">
-                      <p className="font-bold mr-4 text-2xl">85%</p>
+                        <p className="font-bold mr-4 text-2xl">85%</p>
                         <p>
                           $
                           {Math.round(Number(formatUnits(assets, usdcDecimals)) *
@@ -253,22 +259,22 @@ function LendingMarket() {
                           / ${Math.round(formatUnits(assets, usdcDecimals)).toString()}
                         </p>
                       </div>
-                      <progress value={0.85} className="" id="aavesupplyprogress" />
+                      <progress value={aaveCF} className="" id="aavesupplyprogress" />
                     </td>
                     <td>
-                    <div className="flex flex-row">
-                    <p className="font-bold mr-4 text-2xl">{Math.round(50/(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF)*100)*100)}% </p>
-                          <p> $50
-                          / ${Math.round(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF)*100).toString()}
+                      <div className="flex flex-row">
+                        <p className="font-bold mr-4 text-2xl">{Math.round(formattedUserBorrowUsd / (Number(formatUnits(assets, wbtcDecimals)) * (aaveCF) * 100) * 100)}% </p>
+                        <p> ${Math.round(formattedUserBorrowUsd)}
+                          / ${Math.round(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF) * 100).toString()}
                         </p>
-                        </div>
+                      </div>
                       <progress value={
-                        50/ Math.round(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF)*100)
+                        formattedUserBorrowUsd / Math.round(Number(formatUnits(assets, wbtcDecimals)) * (aaveCF) * 100)
                       } className="" id="borrowprogress" />
                     </td>
                   </tr>
                   <tr>
-                  <td>
+                    <td>
                       <img src={Twine} alt="twine" className="size-8" />
                     </td>
                     <td>
@@ -276,25 +282,25 @@ function LendingMarket() {
                     </td>
                     <td>
                       <div className="flex flex-row">
-                      <p className="font-bold mr-4 text-2xl">95%</p>
+                        <p className="font-bold mr-4 text-2xl">{Math.round(combinedCF * 100)}%</p>
                         <p>
                           $
                           {Math.round(Number(formatUnits(assets, usdcDecimals)) *
-                            (twineCF + aaveCF)).toString()}
+                            (combinedCF)).toString()}
                           / ${Math.round(formatUnits(assets, usdcDecimals)).toString()}
                         </p>
                       </div>
-                      <progress value={0.95} className="" id="twinesupplyprogress" />
+                      <progress value={combinedCF} className="" id="twinesupplyprogress" />
                     </td>
                     <td>
-                    <div className="flex flex-row">
-                    <p className="font-bold mr-4 text-2xl">{Math.round(50/(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF)*100)*100)}% </p>
-                          <p> $50
-                          / ${Math.round(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF)*100).toString()}
+                      <div className="flex flex-row">
+                        <p className="font-bold mr-4 text-2xl">{Math.round(formattedUserBorrowUsd / (Number(formatUnits(assets, wbtcDecimals)) * (combinedCF) * 100) * 100)}% </p>
+                        <p> ${Math.round(formattedUserBorrowUsd)}
+                          / ${Math.round(Number(formatUnits(assets, wbtcDecimals)) * (combinedCF) * 100).toString()}
                         </p>
-                        </div>
+                      </div>
                       <progress value={
-                        50/ Math.round(Number(formatUnits(assets, wbtcDecimals)) * (twineCF + aaveCF)*100)
+                        formattedUserBorrowUsd / Math.round(Number(formatUnits(assets, wbtcDecimals)) * (combinedCF) * 100)
                       } className="" id="borrowprogress" />
                     </td>
                   </tr>
@@ -316,7 +322,7 @@ function LendingMarket() {
                 Assets to supply
               </p>
               <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-6 border-slate-300">
-                      <img src={Usdc} alt="usdc" className="size-8" />
+                <img src={Usdc} alt="usdc" className="size-8" />
                 <p className="m-2 font-semibold">USDC</p>
                 <p>16.05%</p>
                 <div>
@@ -378,22 +384,22 @@ function LendingMarket() {
               </p>
               <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-200">
 
-                      <img src={wBTCLogo} alt="wbtc" className="size-8 mr-2" />
+                <img src={wBTCLogo} alt="wbtc" className="size-8 mr-2" />
                 <p className="mr-2 font-semibold">WBTC</p>
                 <p>1.00%</p>
                 <div>
                   <form onSubmit={submitBorrow} className="flex flex-col">
                     <div className="flex flex-col">
-                    <input
-                      name="tokenBorrowAmount"
-                      placeholder="Token Borrow Amount"
-                      className="bg-white mb-2"
-                    />
-                    <input
-                      name="creditBorrowAmount"
-                      placeholder="Credit Borrow Amount"
-                      className="bg-white mb-2"
-                    />
+                      <input
+                        name="tokenBorrowAmount"
+                        placeholder="Token Borrow Amount"
+                        className="bg-white mb-2"
+                      />
+                      <input
+                        name="creditBorrowAmount"
+                        placeholder="Credit Borrow Amount"
+                        className="bg-white mb-2"
+                      />
                     </div>
                     <button
                       className="text-black border-2 shadow-md border-slate-300  hover:border-emerald-300"
