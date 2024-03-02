@@ -7,6 +7,9 @@
   padding: 2rem;
 }
 
+input {
+  text-align: center;
+}
 #aavesupplyprogress::-webkit-progress-value {
   background:  #72D1F5; 
   border-radius: 10px 0 0 10px;

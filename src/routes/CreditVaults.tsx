@@ -147,10 +147,10 @@ function CreditVaults() {
 
   return (
     <div>
- <div className="text-black p-10">
+ <div className="text-black p-10 width-full">
         <h1 className="font-bold">Credit Vaults</h1>
-        <h2>The tokens are deposited to AAVE</h2>
-        <h2>Then we lend the credit out to user who demand it</h2>
+        <h2 className="mt-2">The tokens are deposited to AAVE</h2>
+        <h2 className="mt-2">Then we lend the credit out to user who demand it</h2>
       </div>
       {account.isConnected ? (
         <div className="text-black">

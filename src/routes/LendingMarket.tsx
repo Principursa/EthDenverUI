@@ -220,9 +220,9 @@ function LendingMarket() {
 
   return (
     <div className="w-9/12">
-      <div className="text-black p-10">
-        <h1 className="font-bold">Lending Market</h1>
-        <h2> Use the Aave lending market with additional borrowing limit.</h2>
+      <div className="text-black p-10 flex flex-col items-start w-full text-left">
+        <h1 className="font-bold justify-self-start">Lending Market</h1>
+        <h2 className="mt-2"> Use the Aave lending market with additional borrowing limit.</h2>
       </div>
       {account.isConnected ? (
         <div>
