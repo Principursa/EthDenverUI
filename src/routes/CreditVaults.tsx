@@ -2,6 +2,8 @@
 // @ts-nocheck
 
 import Usdc from "../assets/usdc.png";
+import Twine from "../assets/twine.png";
+import Aave from "../assets/aave.png";
 import { useWriteContract, useReadContract, useAccount } from "wagmi";
 import { ATokenVault } from "../abis/ATokenVault";
 import { Contracts } from "../abis/Twine";
@@ -179,16 +181,16 @@ function CreditVaults() {
                 <tr className="">
                   <td scope="row" className="p-5">
                     <img src={Usdc} alt="usdc" className="size-8" />
-                  </td>
+                   </td>
                   <td className="">
                     <div className="m-5">
-                      <p>5%</p>
-                      <p>Aave</p>
+                      <p>25%</p>
+                      <p>Twine + Aave</p>
                     </div>
-                    <div>
+                    {/* <div>
                       <p>10%</p>
                       <p>Twine</p>
-                    </div>
+                    </div> */}
                   </td>
                   <td className="m-5">
                     85% -{'>'} 95%
