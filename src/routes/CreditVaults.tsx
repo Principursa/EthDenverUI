@@ -20,6 +20,7 @@ const erc20abi = parseAbi([
 
 function CreditVaults() {
   const account = useAccount();
+  console.log(account.address)
 
   const {
     isPending,
@@ -56,6 +57,7 @@ function CreditVaults() {
     functionName: "totalAssets",
     args: [],
   });
+  console.log("totalAssets",totalAssets)
 
   const { data: assets } = useReadContract({
     abi: ATokenVault,
@@ -143,6 +145,11 @@ function CreditVaults() {
 
   return (
     <div>
+ <div className="text-black p-10">
+        <h1 className="font-bold">Credit Vaults</h1>
+        <h2>The tokens are deposited to AAVE</h2>
+        <h2>Then we lend the credit out to user who demand it</h2>
+      </div>
       {account.isConnected ? (
         <div className="text-black">
           {assets ? (
@@ -184,10 +191,10 @@ function CreditVaults() {
                     </div>
                   </td>
                   <td className="m-5">
-                    <div className="height-40 bg-blue-700"></div>
+                    85%>95%
                   </td>
                   <td>Medium</td>
-                  $1000
+                  {totalAssets}
                   {/* Hardcoded, fix later*/}
                   {/*    <td>{totalAssets.toString()}</td> */}
                 </tr>

@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -16,6 +15,43 @@
   will-change: filter;
   transition: filter 300ms;
 }
+#supplyprogress::-webkit-progress-value {
+  background: linear-gradient(to right, #72D1F5 85%, #A6FFCA 10%);
+  border-radius: 10px 0 0 10px;
+}
+#supplyprogress {
+
+}
+#supplyprogress::-webkit-progress-bar {
+  background: lightgray;
+  border-radius: 10px;
+  height:30px;
+  width: 200px;
+
+}
+td{
+  padding: 30px;
+} 
+th{
+  padding: 20px;
+}
+
+table {
+  border-radius: 30px;
+}
+#borrowprogress::-webkit-progress-value {
+  background: coral;
+
+  border-radius: 10px 0 0 10px;
+}
+#borrowprogress::-webkit-progress-bar {
+  background: lightgray;
+  border-radius: 10px;
+  height:30px;
+  width: 200px;
+
+}
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
