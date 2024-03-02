@@ -283,7 +283,6 @@ function LendingMarket() {
               </p>
               <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-300">
                 <p className="m-2">USDC</p>
-                <p>16.05%</p>
                 <div>
                   <form
                     onSubmit={submitMetaAccountApproval}
@@ -343,7 +342,6 @@ function LendingMarket() {
               </p>
               <div className="text-black flex flex-row justify-between border-t-2 border-b-2 p-3 border-slate-300">
                 <p>WBTC</p>
-                <p>1.00%</p>
                 <div>
                   <form onSubmit={submitBorrow} className="flex flex-col">
                     <input
