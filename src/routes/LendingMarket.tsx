@@ -330,12 +330,12 @@ function LendingMarket() {
                     className="flex flex-col"
                   >
 
-                <div className="flex flex-col">
-                    <input
-                      name=" "
-                      placeholder=" "
-                      className="bg-white mb-2"
-                    />
+                    <div className="flex flex-col">
+                      <input
+                        name=" "
+                        placeholder=" "
+                        className="bg-white mb-2"
+                      />
                     </div>
                     <input
                       name="amount"
@@ -358,11 +358,11 @@ function LendingMarket() {
                     className="flex flex-col"
                   >
                     <div className="flex flex-col">
-                    <input
-                      name=" "
-                      placeholder=" "
-                      className="bg-white mb-2"
-                    />
+                      <input
+                        name=" "
+                        placeholder=" "
+                        className="bg-white mb-2"
+                      />
                     </div>
                     <input name="amount" placeholder="Deposit Amount" className="bg-white mb-2" />
                     <button
@@ -380,11 +380,11 @@ function LendingMarket() {
                     className="flex flex-col"
                   >
                     <div className="flex flex-col">
-                    <input
-                      name=" "
-                      placeholder=" "
-                      className="bg-white mb-2"
-                    />
+                      <input
+                        name=" "
+                        placeholder=" "
+                        className="bg-white mb-2"
+                      />
                     </div>
                     <input name="amount" placeholder="Withdraw Amount" className="bg-white mb-2" />
                     <button
